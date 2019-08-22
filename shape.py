@@ -25,7 +25,7 @@ class O(Shape):
 	def who(self):
 		print(str(self.type) + " in position " + str(self.position) + " with the color of " + str(self.color) + " and rotation cycle " + str(self.rotation))
 
-
+'''
 x = O([3,4], 1, "O", [255,0,0])
 
-x.who()
+x.who()'''
