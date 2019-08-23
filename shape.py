@@ -24,7 +24,7 @@ class O(Shape):
 		
 		self.color = (255,0,0)
 		Shape.__init__(self, position, rotation, "O")
-		self.formations =  [['00', '00'],['00','0o']]
+		self.formations =  [['0o', '00'],['00','0o'],['00','o0'],['o0','00']] #O just needs one formation. and fix the string.
 		
 		
 	def who(self): #for us to know. NOT in final game

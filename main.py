@@ -9,6 +9,13 @@ x.who()
 x.show()
 x.rotate()
 x.show()
+x.rotate()
+x.show()
+x.rotate()
+x.show()
+x.rotate()
+x.show()
+
 '''
 while True:
 	time.sleep(10)
