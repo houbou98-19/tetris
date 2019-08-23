@@ -7,6 +7,8 @@ x = O([3,4], 1, [255,0,0])
 
 x.who()
 x.show()
+x.rotate()
+x.show()
 '''
 while True:
 	time.sleep(10)

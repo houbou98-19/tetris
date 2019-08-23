@@ -8,12 +8,12 @@ class Shape:
 	def move():
 		pass
 		
-	def rotate():
+	def rotate(self):
 		self.rotationCycle = self.rotationCycle + 1
-		print("rotationCycle: " + self.rotationCycle)
+		print("rotationCycle: " + str(self.rotationCycle))
 		while self.rotationCycle >= 4:
 			self.rotationCycle = self.rotationCycle - 4
-			print("rotationCycle: " + self.rotationCycle)
+			print("rotationCycle: " + str(self.rotationCycle))
 			
 	def collision():
 		pass
@@ -24,7 +24,7 @@ class O(Shape):
 		
 		self.color = (255,0,0)
 		Shape.__init__(self, position, rotation, "O")
-		self.formations =  [['00', '00'],['00','00']]
+		self.formations =  [['00', '00'],['00','0o']]
 		
 		
 	def who(self): #for us to know. NOT in final game
