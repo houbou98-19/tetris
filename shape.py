@@ -18,19 +18,7 @@ class Shape:
 	def collision():
 		pass
 		
-class O(Shape):
-	
-	def __init__(self, position, rotation, color):
-		
-		self.color = (255,0,0)
-		Shape.__init__(self, position, rotation, "O")
-		self.formations =  [['0o', '00'],['00','0o'],['00','o0'],['o0','00']] #O just needs one formation. and fix the string.
-		
-		
-	def who(self): #for us to know. NOT in final game
-		print(str(self.type) + " in position " + str(self.position) + " with the color of " + str(self.color) + " and rotation cycle " + str(self.rotationCycle))
-
-	def show(self): #for us to know. NOT in final game
+	def show(self): #for us to know. NOT in final game. Although could be taken from to put in with pygame
 	
 		y = len(self.formations[0])
 		x = len(self.formations[0][0])
@@ -38,7 +26,9 @@ class O(Shape):
 		j = 0
 		
 		while i < y:
+			#print(i)
 			while j < x:
+			#	print(j)
 				print(self.formations[self.rotationCycle-1][i][j], end='')
 				j +=1
 			print("")
@@ -53,4 +43,32 @@ class O(Shape):
 		print(self.formations[0][1][0])
 		print(self.formations[0][1][1])
 		'''
+	def __str__(self): #for us to know. NOT in final game
+		return str(self.type) + " in position " + str(self.position) + " with the color of " + str(self.color) + " and rotation cycle " + str(self.rotationCycle)
+
+	
+		
+class O(Shape):
+	
+	def __init__(self, position, rotation, color):
+		
+		self.color = (255,0,0)
+		Shape.__init__(self, position, rotation, "O")
+		self.formations =  [['0o', '00'],['00','0o'],['00','o0'],['o0','00']] #O just needs one formation. and fix the string.
+		
+	'''	
+	def __str__(self): #for us to know. NOT in final game
+		return str(self.type) + " in position " + str(self.position) + " with the color of " + str(self.color) + " and rotation cycle " + str(self.rotationCycle)
+	'''
+	
+class L(Shape):
+	
+	def __init__(self, position, rotation, color):
+		
+		self.color = (0,255,0)
+		Shape.__init__(self, position, rotation, "L")
+		self.formations =  [['0 ', '0 ', '00'],['000','0  '],['00',' 0', '0'],['  0','000']] #O just needs one formation. and fix the string.
+		
+		
+	
 		
