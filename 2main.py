@@ -28,7 +28,6 @@ def createMatrix(w, h):
         matrix.append([])
         for x in range(0, w):
             matrix[y].append(0)
-    print(len(matrix))
     return matrix
 
 
@@ -60,13 +59,16 @@ def merge(arena, player):
     m = player["matrix"]
     p = player["position"]
 
-    print(player)
     for x in range(0, len(m)):
         for y in range(0, len(m[x])):
             value = matrix[x][y]
-            if value != 0:
-
-                arena[y + p["y"]][x + p["x"]] = value
+            # if value != 0:
+            print("y: " + str(y))
+            print("Position: " + str(p))
+            arenaRow = arena[x + p["x"]]
+            arenaRow[y + p["y"]] = value
+    for row in arena:
+        print(row)
 
 
 def main():
@@ -76,12 +78,8 @@ def main():
         if(collide(arena, player)):
             player["position"]["y"] -= 1
             merge(arena, player)
-            # for row in arena:
-            #     print(row)
-            # print("")
 
             player["position"]["y"] = 0
-        print(player)
 
     def draw():
         drawMatrix(window, player["matrix"], player["position"], blockSize)
@@ -115,9 +113,9 @@ def main():
                     wantsToPlay = False
 
                 elif event.key == pygame.K_LEFT:
-                    player["position"]["x"] = player["position"]["x"] - 1
+                    player["position"]["x"] -= 1
                 elif(event.key == pygame.K_RIGHT):
-                    player["position"]["x"] = player["position"]["x"] + 1
+                    player["position"]["x"] += 1
                 elif(event.key == pygame.K_UP):
                     pass
                 elif(event.key == pygame.K_DOWN):
