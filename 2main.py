@@ -34,7 +34,13 @@ def createMatrix(w, h):
     return matrix
 
 
-arena = createMatrix(10, 20)
+arena = createMatrix(12, 20)
+
+#debugging function
+def printMatrixFormated(matrix):
+    for row in matrix:
+        print(row)
+    print("end of matrix")
 
 #placeholder matrix
 matrix = [
@@ -44,17 +50,32 @@ matrix = [
 ]
 
 # this function detects collision with other shapes and game window edges
+
+def detectFullLine(arena):
+    isFullLine = True
+    _y = 0
+    for y in range(0,len(arena)):
+        for x in range(0,len(arena[y])):
+            if arena[y][x] !=1:
+                isFullLine = False
+            else:
+                isFullLine = True
+            _y = y
+    if isFullLine:
+        return _y
 def collide(arena, player):
     m = player["matrix"]
     p = player["position"]
 
+    # m = 3x3 matrix with the shape
+    # p = shape cords offset("x","y")
     for y in range(0, len(m)):
         for x in range(0, len(m[y])):
             if m[y][x] != 0:
-                if y + p["y"] > len(arena)-1:
+                if y + p["y"] > len(arena)-1 or arena[y+p["y"]][x+p["x"]]:
                     return True
-                else:
-                    break
+            else:
+                continue
     return False
 
 
@@ -65,30 +86,27 @@ def merge(arena, player):
     m = player["matrix"]
     p = player["position"]
 
-    for x in range(0, len(m)):
-        for y in range(0, len(m[x])):
-            value = matrix[x][y]
+    for y in range(0, len(m)):
+        for x in range(0, len(m[y])):
+            value = matrix[y][x]
             if value != 0:
-                print("y: " + str(y))
-                print("Position: " + str(p))
-                arenaRow = arena[x + p["x"]]
-                arenaRow[y + p["y"]] = value
-    for row in arena:
-        print(row)
+                arenaRow = arena[y + p["y"]]
+                arenaRow[x + p["x"]] = value
 
 
 
 # main function, entry point
 def main():
 
-    # this function is used to drop the shape, used both manually(keyboard input) and based on time on the main loop of the game
+    # this function is used to drop the shape, used both manually(keyboard input) and based on time in the main loop of the game
     def dropShape():
         player["position"]["y"]  += 1
         if(collide(arena, player)):
-            # player["position"]["y"] -= 1
+            player["position"]["y"] -= 1
             merge(arena, player)
 
             player["position"]["y"] = 0
+            print(detectFullLine(arena))
 
     # this is the main drawing function of the program
     def draw():
@@ -111,7 +129,7 @@ def main():
     blockSize = 40
     timeDelay = 100
 
-    fallSpeed = 10
+    fallSpeed = 50
 
     # Placeholder position
     player = {"position": {"x": 0, "y": 0}, "matrix": matrix}
@@ -130,9 +148,8 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
-                    # Temporary way of quitting the game, change later to quit event
+                    # Temporary way of quitting the game(use "q" in the game window), change later to quit event
                     wantsToPlay = False
-
                 elif event.key == pygame.K_LEFT:
                     # Move shape left
                     player["position"]["x"] -= 1
