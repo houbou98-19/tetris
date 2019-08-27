@@ -4,7 +4,7 @@ import random
 
 from shape import *
 
-x = O([3, 4], 1, (255, 0, 0))
+newO = O({"x": 0, "y": 0}, 1, (255, 0, 0))
 # def drawRect(window, x, y, w, h):
 #     pygame.draw.rect(window, (255, 0, 0), (x, y, w, h))
 
@@ -13,6 +13,9 @@ x = O([3, 4], 1, (255, 0, 0))
 #     115, 240, 142), teal: (115, 240, 238), purple: (207, 115, 240)}
 
 
+# draws 2d matrix on the game window
+# the y index and the offset["y"] corresponds to the y position on the main game grid
+# blocksize is the size of the individual block of the shape, should be square
 def drawMatrix(window, matrix, offset, blockSize):
     for y in range(0, len(matrix)):
         for x in range(0, len(matrix[y])):
@@ -21,9 +24,9 @@ def drawMatrix(window, matrix, offset, blockSize):
                     window, (255, 0, 0), (offset["x"] * blockSize + x * blockSize, offset["y"] * blockSize + y * blockSize, blockSize, blockSize))
 
 
+# creates a 2d array
 def createMatrix(w, h):
     matrix = []
-
     for y in range(0, h):
         matrix.append([])
         for x in range(0, w):
@@ -33,13 +36,14 @@ def createMatrix(w, h):
 
 arena = createMatrix(10, 20)
 
+#placeholder matrix
 matrix = [
     [0, 0, 0],
     [0, 1, 0],
     [1, 1, 1]
 ]
 
-
+# this function detects collision with other shapes and game window edges
 def collide(arena, player):
     m = player["matrix"]
     p = player["position"]
@@ -54,6 +58,8 @@ def collide(arena, player):
     return False
 
 
+# this function puts the array of the shape into the main game array
+# later used to render already dropped shapes and to detect colision with other shapes
 def merge(arena, player):
 
     m = player["matrix"]
@@ -62,32 +68,42 @@ def merge(arena, player):
     for x in range(0, len(m)):
         for y in range(0, len(m[x])):
             value = matrix[x][y]
-            # if value != 0:
-            print("y: " + str(y))
-            print("Position: " + str(p))
-            arenaRow = arena[x + p["x"]]
-            arenaRow[y + p["y"]] = value
+            if value != 0:
+                print("y: " + str(y))
+                print("Position: " + str(p))
+                arenaRow = arena[x + p["x"]]
+                arenaRow[y + p["y"]] = value
     for row in arena:
         print(row)
 
 
+
+# main function, entry point
 def main():
 
+    # this function is used to drop the shape, used both manually(keyboard input) and based on time on the main loop of the game
     def dropShape():
-        player["position"]["y"] = player["position"]["y"]+1
+        player["position"]["y"]  += 1
         if(collide(arena, player)):
-            player["position"]["y"] -= 1
+            # player["position"]["y"] -= 1
             merge(arena, player)
 
             player["position"]["y"] = 0
 
+    # this is the main drawing function of the program
     def draw():
-        drawMatrix(window, player["matrix"], player["position"], blockSize)
+        drawMatrix(window, player["matrix"], player["position"], blockSize) # get roation from shape instance function getRoation
         drawMatrix(window, arena, {"x": 0, "y": 0}, blockSize)
+        
+        #refreshes window
         pygame.display.update()
+        #fills window so that the shapes do not get stay on the screen
         window.fill((0, 0, 0))
+        
+        
     pygame.init()
 
+    # Program variables
     windowSize = (480, 800)
     window = pygame.display.set_mode(windowSize)
     pygame.display.set_caption("Tetris")
@@ -97,32 +113,42 @@ def main():
 
     fallSpeed = 10
 
+    # Placeholder position
     player = {"position": {"x": 0, "y": 0}, "matrix": matrix}
 
     fallTime = 0
     while wantsToPlay:
         fallTime += fallSpeed
 
+        # Drops the shape 
         if fallTime >= timeDelay:
             fallTime = 0
             dropShape()
 
+
+        # Keyboard handler,  may want to change this to allow for continous drop when DOWN is pushed
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
+                    # Temporary way of quitting the game, change later to quit event
                     wantsToPlay = False
 
                 elif event.key == pygame.K_LEFT:
+                    # Move shape left
                     player["position"]["x"] -= 1
                 elif(event.key == pygame.K_RIGHT):
+                    # Move shape right
                     player["position"]["x"] += 1
                 elif(event.key == pygame.K_UP):
+                    # Rotate shape
                     pass
                 elif(event.key == pygame.K_DOWN):
+                    # Drop shape
                     dropShape()
                     fallTime = 0
 
         draw()
+        # Delay so thay loop does not fire to quickly and to control the drop rate of the shape
         pygame.time.delay(timeDelay)
 
     pygame.quit()
