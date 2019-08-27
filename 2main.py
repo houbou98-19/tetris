@@ -21,7 +21,7 @@ def drawMatrix(window, matrix, offset, blockSize):
         for x in range(0, len(matrix[y])):
             if matrix[y][x] is not 0:
                 pygame.draw.rect(
-                    window, (255, 0, 0), (offset["x"] * blockSize + x * blockSize, offset["y"] * blockSize + y * blockSize, blockSize, blockSize))
+                    window, (255, 0, 0), (offset["x"] * blockSize + x * blockSize, offset["y"] * blockSize + y * blockSize, blockSize, blockSize), 1)
 
 
 # creates a 2d array
@@ -34,15 +34,26 @@ def createMatrix(w, h):
     return matrix
 
 
+def createArray(w):
+    array = []
+    for i in range(0, w):
+        array.append(0)
+    return array
+
+
 arena = createMatrix(12, 20)
 
-#debugging function
+
+# debugging function
+
+
 def printMatrixFormated(matrix):
     for row in matrix:
         print(row)
     print("end of matrix")
 
-#placeholder matrix
+
+# placeholder matrix
 matrix = [
     [0, 0, 0],
     [0, 1, 0],
@@ -51,18 +62,20 @@ matrix = [
 
 # this function detects collision with other shapes and game window edges
 
-def detectFullLine(arena):
-    isFullLine = True
-    _y = 0
-    for y in range(0,len(arena)):
-        for x in range(0,len(arena[y])):
-            if arena[y][x] !=1:
-                isFullLine = False
-            else:
-                isFullLine = True
-            _y = y
-    if isFullLine:
-        return _y
+
+def detectFullLine(matrix):
+    indices = []
+    for y in range(0, len(matrix)):
+        rowIsFull = True
+        for x in range(0, len(matrix[y])):
+            if matrix[y][x] != 1:
+                rowIsFull = False
+                break
+        if rowIsFull:
+            indices.append(y)
+    return indices
+
+
 def collide(arena, player):
     m = player["matrix"]
     p = player["position"]
@@ -94,35 +107,18 @@ def merge(arena, player):
                 arenaRow[x + p["x"]] = value
 
 
+score = 0
 
 # main function, entry point
+
+
 def main():
-
-    # this function is used to drop the shape, used both manually(keyboard input) and based on time in the main loop of the game
-    def dropShape():
-        player["position"]["y"]  += 1
-        if(collide(arena, player)):
-            player["position"]["y"] -= 1
-            merge(arena, player)
-
-            player["position"]["y"] = 0
-            print(detectFullLine(arena))
-
-    # this is the main drawing function of the program
-    def draw():
-        drawMatrix(window, player["matrix"], player["position"], blockSize) # get roation from shape instance function getRoation
-        drawMatrix(window, arena, {"x": 0, "y": 0}, blockSize)
-        
-        #refreshes window
-        pygame.display.update()
-        #fills window so that the shapes do not get stay on the screen
-        window.fill((0, 0, 0))
-        
-        
     pygame.init()
+    pygame.font.init()
+    myfont = pygame.font.SysFont('Comic Sans ', 30)
 
     # Program variables
-    windowSize = (480, 800)
+    windowSize = (480, 900)
     window = pygame.display.set_mode(windowSize)
     pygame.display.set_caption("Tetris")
     wantsToPlay = True
@@ -131,19 +127,55 @@ def main():
 
     fallSpeed = 50
 
+    # img = pygame.image.load('./img/bg.png')
+
     # Placeholder position
     player = {"position": {"x": 0, "y": 0}, "matrix": matrix}
 
     fallTime = 0
+
+    def handleFullLine(matrix):
+        global score
+        indices = detectFullLine(matrix)
+        if indices != []:
+            for index in indices:
+                matrix.pop(index)
+                matrix.insert(0, createArray(len(matrix[0])))
+                score += 100
+
+    # this function is used to drop the shape, used both manually(keyboard input) and based on time in the main loop of the game
+
+    def dropShape():
+        player["position"]["y"] += 1
+        if(collide(arena, player)):
+            player["position"]["y"] -= 1
+            merge(arena, player)
+
+            player["position"]["y"] = 0
+            handleFullLine(arena)
+            print(score)
+
+    # this is the main drawing function of the program
+
+    def draw():
+        # get roation from shape instance function getRoation
+        drawMatrix(window, player["matrix"], player["position"], blockSize)
+        drawMatrix(window, arena, {"x": 0, "y": 0}, blockSize)
+
+        # refreshes window
+        pygame.display.update()
+        # fills window so that the shapes do not get stay on the screen
+        window.fill((0, 0, 0))
+
+        pygame.draw.rect(window, (219, 187, 59), (0, 805, 480, 100), 10)
     while wantsToPlay:
+        textsurface = myfont.render('Score: '+str(score), False, (255, 204, 0))
         fallTime += fallSpeed
 
-        # Drops the shape 
+        # Drops the shape
         if fallTime >= timeDelay:
             fallTime = 0
             dropShape()
-
-
         # Keyboard handler,  may want to change this to allow for continous drop when DOWN is pushed
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -163,8 +195,9 @@ def main():
                     # Drop shape
                     dropShape()
                     fallTime = 0
-
+        window.blit(textsurface, (150, 850))
         draw()
+
         # Delay so thay loop does not fire to quickly and to control the drop rate of the shape
         pygame.time.delay(timeDelay)
 
