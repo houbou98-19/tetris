@@ -11,7 +11,7 @@ class Shape:
 	def rotate(self):
 		self.rotationCycle = self.rotationCycle + 1
 		print("rotationCycle: " + str(self.rotationCycle))
-		while self.rotationCycle >= 4:
+		while self.rotationCycle >= 3:
 			self.rotationCycle = self.rotationCycle - 4
 			print("rotationCycle: " + str(self.rotationCycle))
 			
@@ -54,21 +54,41 @@ class O(Shape):
 		
 		self.color = (255,0,0)
 		Shape.__init__(self, position, rotation, "O")
-		self.formations =  [['0o', '00'],['00','0o'],['00','o0'],['o0','00']] #O just needs one formation. and fix the string.
+		self.formations =  [[[1,1,0,0],
+							 [1,1,0,0],
+							 [0,0,0,0]],
+							 
+							 ] #O just needs one formation. and fix the string.
 		
 	'''	
 	def __str__(self): #for us to know. NOT in final game
 		return str(self.type) + " in position " + str(self.position) + " with the color of " + str(self.color) + " and rotation cycle " + str(self.rotationCycle)
 	'''
 	
+	def getRotation(self):
+		return self.rotationCycle
 class L(Shape):
 	
 	def __init__(self, position, rotation, color):
 		
 		self.color = (0,255,0)
 		Shape.__init__(self, position, rotation, "L")
-		self.formations =  [['0 ', '0 ', '00'],['000','0  '],['00',' 0', '0'],['  0','000']] #O just needs one formation. and fix the string.
-		
-		
-	
-		
+		self.formations =  [[[0,0,0,0],
+							 [1,0,0,0],
+							 [1,0,0,0],
+							 [1,1,0,0]],
+							 
+							[[0,0,0,0],
+							 [0,0,0,0],
+							 [1,1,1,0],
+							 [1,0,0,0]],
+							 
+							[[0,0,0,0],
+							 [1,1,0,0],
+							 [0,1,0,0],
+							 [0,1,0,0]],
+							 
+							[[0,0,0,0],
+							 [0,0,0,0],
+							 [0,0,1,0],
+							 [1,1,1,0]]]
