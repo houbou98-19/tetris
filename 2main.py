@@ -184,11 +184,11 @@ def main():
                     wantsToPlay = False
                 elif event.key == pygame.K_LEFT:
                     # Move shape left
-                    if(player["position"]["x"] >=1):
+                    if(player["position"]["x"] >= 1):
                         player["position"]["x"] -= 1
                 elif(event.key == pygame.K_RIGHT):
                     # Move shape right
-                    if(player["position"]["x"] <=8):
+                    if(player["position"]["x"] <= 8):
                         player["position"]["x"] += 1
                 elif(event.key == pygame.K_UP):
                     # Rotate shape
