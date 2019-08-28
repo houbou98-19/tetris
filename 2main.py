@@ -146,7 +146,7 @@ def main():
     # this function is used to drop the shape, used both manually(keyboard input) and based on time in the main loop of the game
 
     def dropShape():
-        player["position"]["y"] += 1
+        player["position"]["y"] += 1 #we need to check if the matrix is outside of arena to the right
         if(collide(arena, player)):
             player["position"]["y"] -= 1
             merge(arena, player)
@@ -184,10 +184,12 @@ def main():
                     wantsToPlay = False
                 elif event.key == pygame.K_LEFT:
                     # Move shape left
-                    player["position"]["x"] -= 1
+                    if(player["position"]["x"] >=1):
+                        player["position"]["x"] -= 1
                 elif(event.key == pygame.K_RIGHT):
                     # Move shape right
-                    player["position"]["x"] += 1
+                    if(player["position"]["x"] <=8):
+                        player["position"]["x"] += 1
                 elif(event.key == pygame.K_UP):
                     # Rotate shape
                     pass
@@ -195,6 +197,7 @@ def main():
                     # Drop shape
                     dropShape()
                     fallTime = 0
+       
         window.blit(textsurface, (150, 850))
         draw()
 

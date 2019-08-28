@@ -59,11 +59,7 @@ class O(Shape):
 							 [0,0,0,0]],
 							 
 							 ] #O just needs one formation. and fix the string.
-		
-	'''	
-	def __str__(self): #for us to know. NOT in final game
-		return str(self.type) + " in position " + str(self.position) + " with the color of " + str(self.color) + " and rotation cycle " + str(self.rotationCycle)
-	'''
+	
 	
 	def getRotation(self):
 		return self.rotationCycle
