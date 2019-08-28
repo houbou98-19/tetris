@@ -146,7 +146,7 @@ def main():
     # this function is used to drop the shape, used both manually(keyboard input) and based on time in the main loop of the game
 
     def dropShape():
-        player["position"]["y"] += 1 #we need to check if the matrix is outside of arena to the right
+        player["position"]["y"] += 1 
         if(collide(arena, player)):
             player["position"]["y"] -= 1
             merge(arena, player)
