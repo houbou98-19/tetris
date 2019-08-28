@@ -4,7 +4,7 @@ import random
 
 from shape import *
 
-newO = O({"x": 0, "y": 0}, 1, (255, 0, 0))
+newO = O({"x": 0, "y": 0}, 1)
 # def drawRect(window, x, y, w, h):
 #     pygame.draw.rect(window, (255, 0, 0), (x, y, w, h))
 

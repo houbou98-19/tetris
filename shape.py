@@ -47,7 +47,32 @@ class Shape:
 		return str(self.type) + " in position " + str(self.position) + " with the color of " + str(self.color) + " and rotation cycle " + str(self.rotationCycle)
 
 	
+class T(Shape):
+	
+	def __init__(self, position, rotation):
 		
+		self.color = (0,0,255)
+		Shape.__init__(self, position, rotation, "L")
+		self.formations =  [[[0,0,0,0],
+							 [0,0,0,0],
+							 [0,1,0,0],
+							 [1,1,1,0]],
+							 
+							[[0,0,0,0],
+							 [0,1,0,0],
+							 [1,1,0,0],
+							 [0,1,0,0]],
+							 
+							[[0,0,0,0],
+							 [0,0,0,0],
+							 [1,1,1,0],
+							 [0,1,0,0]],
+							 
+							[[0,0,0,0],
+							 [1,0,0,0],
+							 [1,1,0,0],
+							 [1,0,0,0]]]
+	 
 class O(Shape):
 	
 	def __init__(self, position, rotation, color):
@@ -58,11 +83,10 @@ class O(Shape):
 							 [1,1,0,0],
 							 [0,0,0,0]],
 							 
-							 ] #O just needs one formation. and fix the string.
-	
-	
+							 ] #O just needs one formation. and fix the string.	
 	def getRotation(self):
 		return self.rotationCycle
+								
 class L(Shape):
 	
 	def __init__(self, position, rotation, color):
@@ -88,3 +112,77 @@ class L(Shape):
 							 [0,0,0,0],
 							 [0,0,1,0],
 							 [1,1,1,0]]]
+							 
+class J(Shape):
+	
+	def __init__(self, position, rotation):
+		
+		self.color = (0,0,255)
+		Shape.__init__(self, position, rotation, "L")
+		self.formations =  [[[0,0,0,0],
+							 [0,1,0,0],
+							 [0,1,0,0],
+							 [1,1,0,0]],
+							 
+							[[0,0,0,0],
+							 [0,0,0,0],
+							 [1,1,1,0],
+							 [0,0,1,0]],
+							 
+							[[0,0,0,0],
+							 [0,1,1,0],
+							 [0,1,0,0],
+							 [0,1,0,0]],
+							 
+							[[0,0,0,0],
+							 [0,0,0,0],
+							 [1,0,0,0],
+							 [1,1,1,0]]]
+							 
+class I(Shape):
+	
+	def __init__(self, position, rotation, color):
+		
+		self.color = (0,255,0)
+		Shape.__init__(self, position, rotation, "L")
+		self.formations =  [[[1,0,0,0],
+							 [1,0,0,0],
+							 [1,0,0,0],
+							 [1,0,0,0]],
+							 
+							[[0,0,0,0],
+							 [0,0,0,0],
+							 [0,0,0,0],
+							 [1,1,1,1]]]
+							 
+class S(Shape):
+	
+	def __init__(self, position, rotation, color):
+		
+		self.color = (0,255,0)
+		Shape.__init__(self, position, rotation, "L")
+		self.formations =  [[[0,0,0,0],
+							 [0,0,0,0],
+							 [0,1,1,0],
+							 [1,1,0,0]],
+							 
+							[[0,0,0,0],
+							 [1,0,0,0],
+							 [1,1,0,0],
+							 [0,1,0,0]]]
+							 
+class Z(Shape):
+	
+	def __init__(self, position, rotation, color):
+		
+		self.color = (0,255,0)
+		Shape.__init__(self, position, rotation, "L")
+		self.formations =  [[[0,0,0,0],
+							 [0,0,0,0],
+							 [1,1,0,0],
+							 [0,1,1,0]],
+							 
+							[[0,0,0,0],
+							 [0,1,0,0],
+							 [1,1,0,0],
+							 [1,0,0,0]]]
